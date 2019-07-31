@@ -5,32 +5,46 @@
 // });
 // xhr.send();
 
-/* function request(method, url, cb) {
-    var xhr = new XMLHttpRequest();
-    xhr.open(method, url, true);
-    xhr.addEventListener('load', function(e) {
-        cb({
-            body: JSON.parse(e.target.response),
-            status: e.target.status
-        })
-    });
-    xhr.send();
-} */
+// function request(method, url, cb) {
+//     var xhr = new XMLHttpRequest();
+//     xhr.open(method, url, true);
+//     xhr.addEventListener('load', function(e) {
+//         cb({
+//             body: JSON.parse(e.target.response),
+//             status: e.target.status
+//         })
+//     });
+//     xhr.send();
+// }
 
 var pag = document.getElementById('wrapper');
 
-request('get', 'https://swapi.co/api/people/', function(data){
-    var paginationArray = drawPagination(data.body.count, 10, 1);
-    pag.innerHTML = paginationArray.join('');
-});
+request('get', 'https://swapi.co/api/people/')
+    .then(function(data){
+        return data.results[0].starships;
+    })
+    .then(function(ships){
+        return request('get', ships[0]);
+    })
+    .then(function(starShipInfo){
+        console.log(starShipInfo);
+    })
 
-function requestData(e, page) {
-    request('get', 'https://swapi.co/api/people/?page=' + page, function(data){
-        var paginationArray = drawPagination(data.body.count, 10, page);
-        pag.innerHTML = paginationArray.join('');
-    });
-    e.preventDefault();
-}
+
+
+
+// request('get', 'https://swapi.co/api/people/', function(data){
+//     var paginationArray = drawPagination(data.body.count, 10, 1);
+//     pag.innerHTML = paginationArray.join('');
+// });
+
+// function requestData(e, page) {
+//     request('get', 'https://swapi.co/api/people/?page=' + page, function(data){
+//         var paginationArray = drawPagination(data.body.count, 10, page);
+//         pag.innerHTML = paginationArray.join('');
+//     });
+//     e.preventDefault();
+// }
 
 
 //>>>>>>>>>>>>>>>>>>>> Мой вариант пагинации по страницам swapi.co >>>>>>>>>>>>>>>
@@ -110,5 +124,3 @@ link9.addEventListener('click', function() {
         console.log(data.body);
     });
 }); */
-
-
